@@ -1,0 +1,3 @@
+/Users/sequin_yf/CLionProjects/memory_managment/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/sequin_yf/CLionProjects/memory_managment/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/sequin_yf/CLionProjects/memory_managment/cmake-build-debug/CMakeFiles/memory_managment.dir
