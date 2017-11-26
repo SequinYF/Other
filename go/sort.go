@@ -6,6 +6,7 @@ import (
 	"strings"
 	"fmt"
 	"strconv"
+	"time"
 )
 
 type va struct {
@@ -14,14 +15,14 @@ type va struct {
 
 type Sort interface {
 	Qsort(numbers []int, left, right int)
-	Merge(numbers []int, left, right int)
+	Merge_sort(numbers []int, left, right int, temp []int)
 }
 
 func (v *va)Qsort(numbers []int, left, right int) {
 	if left < right {
 		q := Partition(numbers, left, right)
-		go	v.Qsort(numbers, left, q - 1)
-		go	v.Qsort(numbers, q + 1, right)
+		v.Qsort(numbers, left, q - 1)
+		v.Qsort(numbers, q + 1, right)
 	}
 }
 
@@ -37,8 +38,50 @@ func Partition(numbers []int, left, right int) int{
 	return i + 1
 }
 
-func (v *va)Merge(numbers []int, left, right int) {
 
+func merge(numbers []int, left, mid, right int, temp []int) {
+	i, j, t := left, mid + 1, 0
+	for i < mid && j <=right {
+		if numbers[i] <= numbers[j] {
+			temp[t] = numbers[i]
+			t++
+			i++
+		} else {
+			temp[t] = numbers[j]
+			t++
+			j++
+		}
+	}
+
+	for i <= mid {
+		temp[t] = numbers[i]
+		i++
+		t++
+	}
+
+	for j <= right {
+		temp[t] = numbers[j]
+		t++
+		j++
+	}
+
+	t = 0
+
+	for left <= right {
+		numbers[left] = temp[t]
+		t++
+		left++
+	}
+}
+
+func (v *va)Merge_sort(numbers []int, left, right int, temp []int) {
+
+	if left < right {
+		mid := (left + right) / 2
+		v.Merge_sort(numbers, left, mid, temp)
+		v.Merge_sort(numbers, mid + 1, right, temp)
+		merge(numbers, left, mid, right, temp)
+	}
 }
 
 
@@ -59,13 +102,18 @@ func main() {
 
 		numbers1 := numbers
 		v := &va{}
+		t1 := time.Now()
 		v.Qsort(numbers, 0, len(numbers) -1)
-		fmt.Println("qsort")
+		t2 := time.Now()
+		fmt.Println("The qsort sorting process costs", t2.Sub(t1), "to complete")
 		for _, num := range numbers {
 			fmt.Print(num ," ")
 		}
-		v.Merge(numbers1, 0, len(numbers1) - 1)
-		fmt.Println("merge")
+		temp := make([]int, len(numbers) + 2)
+		t1 = time.Now()
+		v.Merge_sort(numbers1, 0, len(numbers1) - 1, temp)
+		t2 = time.Now()
+		fmt.Println("\nThe merge sorting process costs", t2.Sub(t1), "to complete")
 		for _, num := range numbers1 {
 			fmt.Print(num ," ")
 		}
