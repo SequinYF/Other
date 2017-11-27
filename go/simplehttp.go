@@ -16,8 +16,13 @@ func main() {
 
     service := os.Args[1]
 
-    conn, err := net.Dial("tcp", service)
+    tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
     checkError(err)
+    conn, err := net.DialTCP("tcp", nil, tcpAddr)
+    checkError(err)
+
+    //conn, err := net.Dial("tcp", service)
+    //checkError(err)
 
     _, err = conn.Write([]byte("HEAD / HTTP /1.0\r\n\r\n"))
     checkError(err)
