@@ -30,17 +30,17 @@ func main() {
     msg[7] = 37
     len := 8
 
-    check := checkSum(msg[0:12])
+    //check := checkSum(msg[0:12])
 
-    msg[2] = byte(check >> 8)
-    msg[3] = byte(check & 255)
+   // msg[2] = byte(check >> 8)
+   // msg[3] = byte(check & 255)
 
     _, err = conn.Write(msg[0:len])
     checkError(err)
 
     fmt.Println("Got response")
     if msg[5] == 13 {
-        fmt.Println("Got response")
+        fmt.Println("Identiifier matches")
     }
 
     if msg[7] == 37 {
